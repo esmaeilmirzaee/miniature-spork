@@ -30,3 +30,7 @@ func (e *Repository) HomePageHandler(w http.ResponseWriter, r * http.Request) {
 
 	renderers.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{StringMap: stringMap})
 }
+
+func (e *Repository) AboutPageHandler(w http.ResponseWriter, r *http.Request) {
+	renderers.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{})
+}
