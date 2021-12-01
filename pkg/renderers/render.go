@@ -3,6 +3,7 @@ package renderers
 import (
 	"bytes"
 	"github.com/esmaeilmirzaee/random-time-sleeper/pkg/config"
+	"github.com/esmaeilmirzaee/random-time-sleeper/pkg/models"
 	"html/template"
 	"log"
 	"net/http"
@@ -17,7 +18,11 @@ func NewTemplate(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplate(w http.ResponseWriter, templateName string) {
+func DefaultTemplateData(td *models.TemplateData) *models.TemplateData {
+	return td
+}
+
+func RenderTemplate(w http.ResponseWriter, templateName string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 	if app.UseCache {
 		tc = app.TemplateCache
@@ -31,7 +36,10 @@ func RenderTemplate(w http.ResponseWriter, templateName string) {
 	}
 
 	buf := new(bytes.Buffer)
-	err := t.Execute(buf, nil)
+
+	td = DefaultTemplateData(td)
+
+	err := t.Execute(buf, td)
 	if err != nil {
 		log.Println("Error executing template", err)
 	}

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/esmaeilmirzaee/random-time-sleeper/pkg/config"
+	"github.com/esmaeilmirzaee/random-time-sleeper/pkg/models"
 	"github.com/esmaeilmirzaee/random-time-sleeper/pkg/renderers"
 	"net/http"
 )
@@ -24,5 +25,8 @@ func NewHandlers(r *Repository) {
 
 // HomePageHandler handles index page requests.
 func (e *Repository) HomePageHandler(w http.ResponseWriter, r * http.Request) {
-	renderers.RenderTemplate(w, "home.page.tmpl")
+	stringMap := make(map[string]string)
+	stringMap["test"] = "Hi. Bonjour."
+
+	renderers.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{StringMap: stringMap})
 }
