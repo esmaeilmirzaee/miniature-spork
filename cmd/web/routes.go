@@ -10,6 +10,9 @@ import (
 func routes(app *config.AppConfig) http.Handler {
 	mux:=chi.NewMux()
 
+	//Middleware
+	mux.Use(NoSurf)
+
 	mux.Get("/", handlers.Repo.HomePageHandler)
 	mux.Get("/about", handlers.Repo.AboutPageHandler)
 
