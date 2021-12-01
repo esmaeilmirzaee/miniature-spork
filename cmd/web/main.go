@@ -1,16 +1,31 @@
 package main
 
 import (
+	"github.com/alexedwards/scs/v2"
 	"github.com/esmaeilmirzaee/random-time-sleeper/pkg/config"
 	"github.com/esmaeilmirzaee/random-time-sleeper/pkg/renderers"
 	"log"
 	"net/http"
+	"time"
 )
 
 const portNumber = ":8080"
+var app config.AppConfig
+var session *scs.SessionManager
 
 func main() {
-	var app config.AppConfig
+	// In production change InProduction to true
+	app.InProduction = false
+
+	// A new session manager configuration
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = false
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
+
+	app.Session = session
+
 	app.UseCache = false
 	tc, err := renderers.CreateTemplateCache()
 	if err != nil {
